@@ -26,7 +26,6 @@ export const useAuthStore = defineStore('auth', () => {
     router.push({ path: '/' });
     const { addNotify } = useNotify();
     addNotify({ type: 'positive', message: 'Вход выполнен' });
-
   }
   async function singUp(user: string, password: string) {
     const response = await Api.signUp(user, password);
@@ -35,7 +34,6 @@ export const useAuthStore = defineStore('auth', () => {
     isAuth.value = true;
     const { addNotify } = useNotify();
     addNotify({ type: 'positive', message: 'Регистрация успешна' });
-
   }
   async function singOut() {
     await Api.signOut(token.value);

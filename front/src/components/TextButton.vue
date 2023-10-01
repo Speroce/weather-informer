@@ -2,6 +2,8 @@
   <button>{{ label }}</button>
 </template>
 <script setup lang="ts">
+import 'material-icons/iconfont/material-icons.css';
+
 defineProps<{
   label: string;
 }>();

@@ -20,18 +20,18 @@
           type="password"
           @keydown.enter="sign"
         ></MyInput>
-        <MyButton
+        <TextButton
           :label="mode === 'sign in' ? 'Войти' : 'Зарегистирироваться'"
           @click="sign"
-        ></MyButton>
-        <MyButton
+        ></TextButton>
+        <TextButton
           :label="mode === 'sign in' ? 'Регистрация' : 'Вход'"
           @click="changeMode"
-        ></MyButton>
-        <MyButton
+        ></TextButton>
+        <TextButton
           label="Войти без авторизации"
           @click="notAuthenticatedEnter"
-        ></MyButton>
+        ></TextButton>
       </div>
     </div>
     <div class="warning">{{ warning }}</div>
@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import MyInput from '@/components/MyInput.vue';
-import MyButton from '@/components/MyButton.vue';
+import TextButton from '@/components/TextButton.vue';
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
@@ -66,17 +66,24 @@ function changeMode() {
   warning.value = '';
 }
 
+function setWarning(value: string) {
+  warning.value = value;
+  setTimeout(() => {
+    warning.value = '';
+  }, 5000);
+}
+
 function check() {
   if (
     !username.value ||
     !password.value ||
     (mode.value === 'sign up' && !confirm.value)
   ) {
-    warning.value = 'Заполните все поля';
+    setWarning('Заполните все поля');
     return false;
   }
   if (mode.value === 'sign up' && password.value !== confirm.value) {
-    warning.value = 'Пароли не совпадают';
+    setWarning('Пароли не совпадают');
     return false;
   }
   return true;
@@ -96,8 +103,8 @@ function notAuthenticatedEnter() {
   notifyStore.addNotify({
     type: 'warning',
     message:
-      'Вы можете отправлять не больше 15 запросов на прогноз погоды\n Для снятия ограничений авторизуйтесь',
-    timeout: 8000
+      'Вы можете отправлять не больше 15 запросов на прогноз погоды в час\n Для снятия ограничений авторизуйтесь',
+    timeout: 10000
   });
 }
 </script>

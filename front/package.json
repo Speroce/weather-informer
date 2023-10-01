@@ -12,6 +12,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "material-icons": "^1.13.12",
     "pinia": "^2.1.6",
     "uuid": "^9.0.1",
     "vue": "^3.3.4",
