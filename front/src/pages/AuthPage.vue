@@ -28,6 +28,10 @@
           :label="mode === 'sign in' ? 'Регистрация' : 'Вход'"
           @click="changeMode"
         ></MyButton>
+        <MyButton
+          label="Войти без авторизации"
+          @click="notAuthenticatedEnter"
+        ></MyButton>
       </div>
     </div>
     <div class="warning">{{ warning }}</div>
@@ -37,8 +41,14 @@
 <script setup lang="ts">
 import MyInput from '@/components/MyInput.vue';
 import MyButton from '@/components/MyButton.vue';
-import { Api } from '@/services/Api';
 import { ref } from 'vue';
+import { useAuthStore } from '@/stores/auth';
+import { useRouter } from 'vue-router';
+import { useNotify } from '@/stores/notify';
+const notifyStore = useNotify();
+const router = useRouter();
+
+const authStore = useAuthStore();
 
 type Mode = 'sign up' | 'sign in';
 
@@ -75,7 +85,20 @@ async function sign() {
   if (!check()) {
     return;
   }
-  await Api.signUp(username.value, password.value);
+  if (mode.value === 'sign in') {
+    await authStore.singIn(username.value, password.value);
+  } else {
+    await authStore.singUp(username.value, password.value);
+  }
+}
+function notAuthenticatedEnter() {
+  router.push({ path: '/' });
+  notifyStore.addNotify({
+    type: 'warning',
+    message:
+      'Вы можете отправлять не больше 15 запросов на прогноз погоды\n Для снятия ограничений авторизуйтесь',
+    timeout: 8000
+  });
 }
 </script>
 

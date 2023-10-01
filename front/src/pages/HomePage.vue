@@ -1,12 +1,8 @@
 <template>
   <main>
-    <header>
-
-    </header>
+    <header></header>
     <div class="home-container">
-      <div class="menu-section">
-
-      </div>
+      <div class="menu-section"></div>
     </div>
   </main>
 </template>
@@ -23,7 +19,6 @@ main {
 header {
   height: 40px;
   background: rgb(247, 109, 67);
-
 }
 .home-container {
   height: 100%;
