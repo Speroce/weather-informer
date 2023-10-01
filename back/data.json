@@ -1,0 +1,9 @@
+{
+    "users": [
+        {
+            "name": "odnim",
+            "password": "4123",
+            "token": null
+        }
+    ]
+}

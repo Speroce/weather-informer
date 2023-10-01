@@ -5,24 +5,24 @@
         <MyInput
           v-model="username"
           placeholder="Имя пользователя"
-          @keydown.enter="request"
+          @keydown.enter="sign"
         ></MyInput>
         <MyInput
           v-model="password"
           placeholder="Пароль"
           type="password"
-          @keydown.enter="request"
+          @keydown.enter="sign"
         ></MyInput>
         <MyInput
           v-if="mode === 'sign up'"
           v-model="confirm"
           placeholder="Подтверждение пароля"
           type="password"
-          @keydown.enter="request"
+          @keydown.enter="sign"
         ></MyInput>
         <MyButton
           :label="mode === 'sign in' ? 'Войти' : 'Зарегистирироваться'"
-          @click="request"
+          @click="sign"
         ></MyButton>
         <MyButton
           :label="mode === 'sign in' ? 'Регистрация' : 'Вход'"
@@ -37,6 +37,7 @@
 <script setup lang="ts">
 import MyInput from '@/components/MyInput.vue';
 import MyButton from '@/components/MyButton.vue';
+import { Api } from '@/services/Api';
 import { ref } from 'vue';
 
 type Mode = 'sign up' | 'sign in';
@@ -70,10 +71,11 @@ function check() {
   }
   return true;
 }
-function request() {
+async function sign() {
   if (!check()) {
     return;
   }
+  await Api.signUp(username.value, password.value);
 }
 </script>
 
