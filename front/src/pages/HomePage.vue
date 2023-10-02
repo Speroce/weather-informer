@@ -63,7 +63,6 @@ header > * {
   width: 300px;
   height: 100%;
   background: rgb(35, 185, 255);
-
 }
 .title {
   margin-left: 4px;

@@ -1,13 +1,5 @@
-import { useAuthStore } from '@/stores/auth';
 import { useNotify } from '@/stores/notify';
-// export interface City {
-//   country: string;
-//   lat: string;
-//   lon: string;
-//   name: string;
-//   state: string;
-//   ruName?: string;
-// }
+
 export interface Weather {
   time: number;
   temp: string;
@@ -56,18 +48,16 @@ export class Api {
         }
       });
       const data = await response.json();
-      return data;
-    } catch (error) {
-      const errorWithMessage = error as { message: string };
-      if ('message' in errorWithMessage) {
+      if ('message' in data) {
         const notify = useNotify();
         notify.addNotify({
           type: 'negative',
-          message: errorWithMessage.message
+          message: data.message
         });
-        throw errorWithMessage.message;
+        throw data.message;
       }
-
+      return data;
+    } catch (error) {
       throw 'Неопознанная ошибка сервера';
     }
   }
@@ -81,18 +71,16 @@ export class Api {
         body: JSON.stringify(body)
       });
       const data = await response.json();
-      return data;
-    } catch (error) {
-      const errorWithMessage = error as { message: string };
-      if ('message' in errorWithMessage) {
+      if ('message' in data) {
         const notify = useNotify();
         notify.addNotify({
           type: 'negative',
-          message: errorWithMessage.message
+          message: data.message
         });
-        throw errorWithMessage.message;
+        throw data.message;
       }
-
+      return data;
+    } catch (error) {
       throw 'Неопознанная ошибка сервера';
     }
   }

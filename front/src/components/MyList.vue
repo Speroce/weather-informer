@@ -66,7 +66,7 @@ function deleteItem(item: Item) {
   display: flex;
   padding: 4px;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   border-top: 1px solid;
 }
 .item:last-child {

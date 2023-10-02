@@ -29,11 +29,7 @@ import MyList from '@/components/MyList.vue';
 import IconButton from '@/components/IconButton.vue';
 
 import { ref } from 'vue';
-const items = [
-  { label: 'Example1' },
-  { label: 'Example2' },
-
-];
+const items = [{ label: 'Example1' }, { label: 'Example2' }];
 const selected = ref(items[0]);
 </script>
 <style scoped>

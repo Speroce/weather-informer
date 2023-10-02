@@ -1,5 +1,8 @@
 <template>
-  <div class="info-section" v-if="dataStore.weatherList.length">
+  <div
+    class="info-section"
+    v-if="dataStore.weatherList.length"
+  >
     <div class="curr-day">
       <div class="hours grid">
         <div
@@ -27,24 +30,25 @@
         </div>
       </div>
       <div class="text-section">Ветер, м/с</div>
-        <div class="wind grid">
-          <div
-            v-for="(dir, index) of windDirs"
-            :key="index"
-          >
-            {{ dir }}, {{ windSpeeds[index] }}
-          </div>
+      <div class="wind grid">
+        <div
+          v-for="(dir, index) of windDirs"
+          :key="index"
+        >
+          {{ dir }}, {{ windSpeeds[index] }}
         </div>
+      </div>
       <div class="days">
         <div class="days-info">
           <div
             v-for="(day, index) of days"
             :key="index"
             class="day"
-            :class="{ 'active-day': currentDay === day}"
+            :class="{ 'active-day': currentDay === day }"
             @click="currentDay = day"
           >
-        {{ getDate(day) }}</div>
+            {{ getDate(day) }}
+          </div>
         </div>
       </div>
     </div>
@@ -113,14 +117,13 @@ function dayFilter<T>(array: T[]) {
       return date.getDate() === day.getDate() ? index : false;
     })
     .filter((r) => r !== false);
-    console.log(indexes)
   return array.filter((_, index) => indexes.includes(index));
 }
 
 function getDate(index: number) {
   const date = new Date();
   date.setDate(date.getDate() + index);
-  return date.toLocaleDateString("ru-RU");
+  return date.toLocaleDateString('ru-RU');
 }
 </script>
 
@@ -146,7 +149,7 @@ function getDate(index: number) {
 }
 .grid > div {
   align-content: center;
-    display: inherit;
+  display: inherit;
 }
 .text-section {
   width: 100%;
@@ -191,5 +194,6 @@ function getDate(index: number) {
 .days {
   height: max-content;
   margin: 12px;
+  cursor: pointer;
 }
 </style>

@@ -23,6 +23,7 @@ export const useDataStore = defineStore('data', () => {
     const token = auth.token;
     const response = await Api.weatherData(key, token);
     weatherList.value = response;
+    currentCity.value = key;
   }
   return {
     search,

@@ -43,7 +43,13 @@ export const useAuthStore = defineStore('auth', () => {
     isAuth.value = false;
     router.push({ path: '/auth' });
     const dataStore = useDataStore();
-    dataStore.$reset();
+    dataStore.$patch({
+      currentCity: '',
+      favorite: [],
+      history: [],
+      search: [],
+      weatherList: []
+    });
   }
   async function getMe() {
     const response = await Api.getMe(token.value);

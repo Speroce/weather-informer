@@ -1,7 +1,9 @@
 <template>
   <div class="weather-section">
     <header>
-      <div class="city-name">Введите название города</div>
+      <div class="city-name">
+        {{ dataStore.currentCity || 'Введите название города' }}
+      </div>
       <div class="search">
         <MyInput
           v-model="searchString"
