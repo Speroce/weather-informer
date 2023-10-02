@@ -46,7 +46,7 @@ main {
 }
 header {
   height: 55px;
-  background: rgb(247, 109, 67);
+  background: rgb(107, 245, 245);
   align-items: center;
   justify-content: space-between;
   display: flex;
@@ -62,7 +62,8 @@ header > * {
 .menu-section {
   width: 300px;
   height: 100%;
-  background: sandybrown;
+  background: rgb(35, 185, 255);
+
 }
 .title {
   margin-left: 4px;

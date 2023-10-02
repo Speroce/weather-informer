@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { Api } from '@/services/Api';
 import { v4 as uuidv4 } from 'uuid';
 import { useNotify } from '@/stores/notify';
+import { useDataStore } from './data';
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
   const username = ref('');
@@ -41,6 +42,8 @@ export const useAuthStore = defineStore('auth', () => {
     username.value = '';
     isAuth.value = false;
     router.push({ path: '/auth' });
+    const dataStore = useDataStore();
+    dataStore.$reset();
   }
   async function getMe() {
     const response = await Api.getMe(token.value);

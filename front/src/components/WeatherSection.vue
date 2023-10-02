@@ -3,35 +3,24 @@
     <header>
       <div class="city-name">Введите название города</div>
       <div class="search">
-        <MyInput v-model="searchString" />
-        <IconButton icon="search" />
+        <MyInput
+          v-model="searchString"
+          @keydown.enter="search"
+        />
+        <IconButton
+          icon="search"
+          @click="search"
+        />
       </div>
     </header>
     <!-- <img src="https://openweathermap.org/img/wn/10d@2x.png"/> -->
     <div class="city-options">
       <CityOption
-        label="Chechnya, Rostovska Oblast, CH"
-        :isFavorite="true"
-      />
-      <CityOption
-        label="Chechnya, Rostovska Oblast, CH"
-        :isFavorite="true"
-      />
-      <CityOption
-        label="Chechnya, Rostovska Oblast, CH"
-        :isFavorite="true"
-      />
-      <CityOption
-        label="Chechnya, Rostovska Oblast, CH"
-        :isFavorite="true"
-      />
-      <CityOption
-        label="Chechnya, Rostovska Oblast, CH"
-        :isFavorite="true"
-      />
-      <CityOption
-        label="Chechnya, Rostovska Oblast, CH"
+        v-for="key of dataStore.search"
+        :key="key"
+        :label="key"
         :isFavorite="false"
+        @click="getWeather(key)"
       />
     </div>
     <InfoSection />
@@ -40,18 +29,28 @@
 
 <script setup lang="ts">
 import 'material-icons/iconfont/material-icons.css';
-import { useAuthStore } from '@/stores/auth';
 import MyInput from '@/components/MyInput.vue';
 import IconButton from '@/components/IconButton.vue';
 import InfoSection from '@/components/InfoSection.vue';
-import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 import CityOption from './CityOption.vue';
+import { useDataStore } from '@/stores/data';
+const dataStore = useDataStore();
 const searchString = ref('');
+
+async function search() {
+  if (searchString.value) {
+    await dataStore.searchCities(searchString.value);
+  }
+}
+async function getWeather(key: string) {
+  await dataStore.getWeatherData(key);
+}
 </script>
 
 <style scoped>
 .weather-section {
+  border-left: black solid 1px;
   background: papayawhip;
   height: 100%;
   width: 100%;
@@ -60,7 +59,7 @@ const searchString = ref('');
 }
 header {
   height: 50px;
-  background: pink;
+  background: rgb(35, 185, 255);
   display: flex;
   padding: 8px;
   align-items: center;

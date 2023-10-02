@@ -8,6 +8,9 @@ const API_KEY = 'f2cc7d451440fc13d750c91ba47faca9';
 const port = 1234;
 const globalData = {
   users: [],
+  allCities: {},
+  history: [],
+  notAuthTokens: {},
 };
 
 const app = express();
@@ -77,6 +80,61 @@ app.get('/api/me', (req, res) => {
   }
 });
 
+app.get('/api/cities/search', async (req, res) => {
+  const { search } = req.query;
+  const result = await weatherApiGet(`/geo/1.0/direct?q=${search}&limit=5`);
+  const cities = result.map(({ country, lat, lon, name, state }) => {
+    return { country, lat, lon, name, state };
+  });
+  res.send(cities.map(getCityKey));
+  cities.forEach((city) => {
+    const key = getCityKey(city);
+    globalData.allCities[key] = city;
+  });
+  await saveGlobalData();
+});
+
+app.get('/api/weather', async (req, res) => {
+  const { key, token } = req.query;
+  const { lat, lon } = globalData.allCities[key];
+  const user = globalData.users.find((user) => user.token === token);
+  if (!user) {
+    if (!globalData.notAuthTokens[token]) {
+      globalData.notAuthTokens[token] = 15;
+      setTimeout(async () => {
+        delete globalData.notAuthTokens[token];
+        await saveGlobalData();
+      }, 1000 * 60 * 60);
+    }
+
+    if (globalData.notAuthTokens[token] <= 0) {
+      sendError(
+        res,
+        401,
+        'Войдите, чтобы продолжить поиск, или дождитесь обновления лимита'
+      );
+      await saveGlobalData();
+      return;
+    }
+  }
+  const result = await weatherApiGet(`/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=ru`);
+  const handled = result.list.map(data => {
+    return {
+      time: data.dt * 1000,
+      temp: data.main?.temp ?? 'Н/Д',
+      weather: data.weather?.[0]?.description ?? 'Н/Д',
+      img: `https://openweathermap.org/img/wn/${data.weather?.[0]?.icon}@2x.png` ?? '',
+      windSpeed: data.wind?.speed ?? 'Н/Д',
+      windDir: windDegToDirection(data.wind.deg),
+    }
+  });
+  res.send(handled);
+  globalData.history.push({ key, user: user?.name ?? null, token: !user ? token : null });
+  await saveGlobalData();
+});
+
+
+
 app.listen(port, async () => {
   console.info(`Прослушивание порта: ${port}`);
   await loadGlobalData();
@@ -118,7 +176,7 @@ async function weatherApiGet(url) {
             if (errors.length) {
               reject(errors.join(''));
             } else {
-              resolve(data.join(''));
+              resolve(JSON.parse(data.join('')));
             }
           });
         }
@@ -126,3 +184,37 @@ async function weatherApiGet(url) {
       .end();
   });
 }
+
+function getCityKey(city) {
+  return `${city.name}, ${city.state}, ${city.country}`;
+}
+
+function getCityData(key) {
+  return globalData.allCities[key];
+}
+
+function windDegToDirection(deg) {
+  switch (true) {
+    case deg < 22.5 || deg >= 337.5:
+      return 'с';
+    case deg < 67.5:
+      return 'с/в';
+    case deg < 112.5:
+      return 'в';
+    case deg < 157.5:
+      return 'ю/в';
+    case deg < 202.5:
+      return 'ю';
+    case deg < 247.5:
+      return 'ю/з';
+    case deg < 292.5:
+      return 'з';
+    case deg < 337.5:
+      return 'с/з';
+    default:
+      return 'Н/Д';
+  }
+}
+// async function getCities(search) {
+//   return await weatherApiGet(`/geo/1.0/direct?q=${search}&limit=5`);
+// }

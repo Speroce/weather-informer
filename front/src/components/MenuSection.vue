@@ -1,43 +1,38 @@
 <template>
   <div class="menu-section">
     <div class="inner-list">
+      <div class="list-header">Избранное</div>
       <MyList
-        :selected="selected"
+        v-model:selected="selected"
+        :items="items"
+        :withDeleteBtn="true"
+      />
+    </div>
+    <div class="inner-list">
+      <div class="list-header">
+        <div>История поиска</div>
+        <IconButton
+          icon="delete"
+          title="Очистить историю поиска"
+        />
+      </div>
+      <MyList
+        v-model:selected="selected"
         :items="items"
       />
     </div>
-    <div class="inner-list"></div>
   </div>
 </template>
 
 <script setup lang="ts">
 import MyList from '@/components/MyList.vue';
-// import { v4 as uuidv4 } from 'uuid';
+import IconButton from '@/components/IconButton.vue';
 
 import { ref } from 'vue';
 const items = [
-  { label: v4() },
-  { label: 'adfsasddfdsfs' },
-  { label: 'adfsaesfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdesfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsadsfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdsfs' },
-  { label: 'adfsasfdsfs' }
+  { label: 'Example1' },
+  { label: 'Example2' },
+
 ];
 const selected = ref(items[0]);
 </script>
@@ -51,8 +46,18 @@ const selected = ref(items[0]);
 }
 .inner-list {
   height: 50%;
+  display: flex;
+  flex-direction: column;
 }
 .inner-list:first-child {
   border-bottom: 1px solid;
+}
+.list-header {
+  height: min-content;
+  padding: 4px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

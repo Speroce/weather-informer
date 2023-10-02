@@ -1,6 +1,6 @@
 <template>
   <div class="city-option">
-    <span>{{ label }}</span>
+    <span @click="click">{{ label }}</span>
     <IconButton
       :icon="isFavorite ? 'star' : 'star_border'"
       @click="favClick"
@@ -17,13 +17,17 @@ const props = defineProps<{
   isFavorite: boolean;
 }>();
 
-const { isFavorite } = toRefs(props);
+const { isFavorite, label } = toRefs(props);
 
 const emit = defineEmits<{
   (e: 'update:isFavorite', value: boolean): void;
+  (e: 'click', value: string): void;
 }>();
 function favClick() {
   emit('update:isFavorite', !isFavorite.value);
+}
+function click() {
+  emit('click', label.value);
 }
 </script>
 

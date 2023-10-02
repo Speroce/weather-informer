@@ -6,16 +6,23 @@
         :key="item.label"
         class="item"
         :class="{ selected: selected.label === item.label }"
+        @click="select(item)"
       >
-      <div class="label">{{ item.label }}</div>
-      <IconButton icon="delete"/>
-    </div>
+        <div class="label">{{ item.label }}</div>
+        <IconButton
+          @click="deleteItem(item)"
+          v-if="withDeleteBtn"
+          icon="cancel"
+          title="Удалить из избранного"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import IconButton from '@/components/IconButton.vue';
+import { toRefs } from 'vue';
 
 type Item = { label: string };
 
@@ -25,9 +32,18 @@ const props = defineProps<{
   selected: Item;
 }>();
 
+const { items } = toRefs(props);
+
 const emit = defineEmits<{
   (e: 'update:selected', value: Item): void;
+  (e: 'delete', value: Item): void;
 }>();
+function select(item: Item) {
+  emit('update:selected', item);
+}
+function deleteItem(item: Item) {
+  emit('delete', item);
+}
 </script>
 <style scoped>
 .list {
@@ -44,11 +60,19 @@ const emit = defineEmits<{
   height: 100%;
 }
 .item {
-    font-size: 18px;
-    background: rgb(173, 190, 20);
-    height: 40px;
+  font-size: 18px;
+  background: rgb(255, 255, 255);
+  height: 40px;
+  display: flex;
+  padding: 4px;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid;
+}
+.item:last-child {
+  border-bottom: 1px solid;
 }
 .selected {
-    background: rgb(59, 17, 128);
+  background: rgb(190, 190, 190);
 }
 </style>
