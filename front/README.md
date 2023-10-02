@@ -1,46 +1,28 @@
-# .
 
-This template should help get you started developing with Vue 3 in Vite.
+# Тестовое задание
 
-## Recommended IDE Setup
+## Использованные зависимости
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Бэкенд
+ - "body-parser" - для обработки тела запроса
+ - "uuid" - для генерации токенов
 
-## Type Support for `.vue` Imports in TS
+Фронтенд
+ - "typescript", "vue-tsc" - типизация, лучшая подсветка в IDE
+ - "vite" - сборщик приложения
+ - "npm-run-all2", "@rushstack/eslint-patch", "@tsconfig/node18":, "@types/node": ", "@types/uuid", "@vitejs/plugin-vue", "@vitejs/plugin-vue-jsx", "@vue/eslint-config-prettier", "@vue/eslint-config-typescript", "@vue/tsconfig, "eslint", "eslint-plugin-vue" - стандартные пакеты и плагины сборщика vuex, а также типы для бибилиотек
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+## Запуск
+Клиентская часть: в папке проекта ввести команды `npm i`, `npm run dev`
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+Серверная часть: в папке проекта ввести команду `node .`
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
 
-## Customize configuration
+## Описание работы
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+Реализована простая регистрация по токенам. Есть возможность заходить без логина, но с ограничением 60 запросов в час на информацию о погоде.
 
-## Project Setup
 
-```sh
-npm install
-```
+В поле поиска вбить название города или его часть. Будет предложено до 5 вариантов по схожести имени. Нажав на один из них, выводятся данные о погоде.
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+К сожалению, не хватило времени реализовать на сервере сохранение истории просмотра и добавление в избранное. На их месте находятся заглушки. Также недоработан дизайн страницы.
